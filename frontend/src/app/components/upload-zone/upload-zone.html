@@ -1,0 +1,20 @@
+<div class="upload-area" [class.dragover]="isDragOver" (click)="fileInput.click()" (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave()" (drop)="onDrop($event)">
+
+    <div class="upload-icon">
+        <i class="fa-solid fa-file-arrow-up"></i>
+    </div>
+
+    <div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem;">
+        {{ fileName || 'Drop document or click to upload' }}
+    </div>
+    <div style="color: var(--text-secondary); font-size: 0.85rem;">
+        PDF, DOCX, or HTML up to 10MB
+    </div>
+
+    <div class="upload-btn">
+        <i class="fa-solid fa-plus"></i> Select File
+    </div>
+
+    <input type="file" #fileInput class="hidden-input" (change)="onFileSelected($event)" accept=".pdf,.docx,.html">
+</div>

@@ -1,0 +1,55 @@
+<div class="chat-container">
+    <div class="chat-messages" #scrollContainer>
+        <div *ngFor="let msg of messages" class="message" [ngClass]="msg.type">
+            <div class="answer-text">{{ msg.text }}</div>
+
+            <!-- Intelligence Dropdown -->
+            <div *ngIf="msg.intelligence && (msg.intelligence.confidence_metrics || msg.intelligence.mappings || msg.intelligence.sources)"
+                class="intelligence-container">
+
+                <div class="intelligence-toggle" [class.active]="msg.intelligence.showDetails"
+                    (click)="toggleIntelligence(msg)">
+                    <i class="fa-solid fa-chevron-down"></i> Intelligence Details
+                </div>
+
+                <div class="intelligence-details" [class.show]="msg.intelligence.showDetails">
+                    <!-- Metrics -->
+                    <div *ngIf="msg.intelligence.confidence_metrics" style="margin-bottom: 1rem;">
+                        <strong>System Confidence: {{ getMathRound(msg.intelligence.confidence_metrics.final_confidence)
+                            }}%</strong>
+                        <div style="display: flex; gap: 10px; margin-top: 5px;">
+                            <span style="font-size: 0.8rem; opacity: 0.8;">Schema: {{
+                                getMathRound(msg.intelligence.confidence_metrics.schema_score) }}%</span>
+                            <span style="font-size: 0.8rem; opacity: 0.8;">Vector: {{
+                                getMathRound(msg.intelligence.confidence_metrics.semantic_score) }}%</span>
+                        </div>
+                    </div>
+
+                    <!-- Mappings -->
+                    <div *ngIf="msg.intelligence.mappings?.length > 0" style="margin-bottom: 1rem;">
+                        <strong>Mapped Fields:</strong>
+                        <div *ngFor="let map of msg.intelligence.mappings" style="margin-top: 3px;">
+                            • {{ map.field }} ({{ getMathRound(map.confidence) }}% match)
+                        </div>
+                    </div>
+
+                    <!-- Sources -->
+                    <div *ngIf="msg.intelligence.sources?.length > 0">
+                        <strong>Top Sources:</strong>
+                        <div *ngFor="let s of msg.intelligence.sources.slice(0, 3)" style="margin-top: 3px;">
+                            • Page {{ s.metadata.page_number }} ({{ s.metadata.section_type }})
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-area">
+        <input type="text" [(ngModel)]="userInput" (keyup.enter)="sendMessage()"
+            placeholder="Ask about rates, carriers, or instructions..." [disabled]="!documentId">
+        <button class="primary-btn" (click)="sendMessage()" [disabled]="!documentId || !userInput.trim()">
+            <i class="fa-solid fa-paper-plane"></i> Send
+        </button>
+    </div>
+</div>

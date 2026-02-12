@@ -1,0 +1,16 @@
+<div style="display: flex; flex-direction: column; gap: 1rem; padding: 0.5rem; overflow-y: auto; height: 100%;">
+    <div *ngIf="(chunks$ | async)?.length === 0"
+        style="color: var(--text-secondary); text-align: center; margin-top: 2rem;">
+        No chunks found. Upload a document to see parsed results.
+    </div>
+
+    <div *ngFor="let chunk of (chunks$ | async); let i = index" class="chunk-card">
+        <div class="chunk-meta">
+            <span>{{ getSectionType(chunk) }}</span>
+            <span>Page {{ getPageNumber(chunk) }} • Chunk {{ i + 1 }}</span>
+        </div>
+        <div style="font-size: 0.95rem; white-space: pre-wrap; color: var(--text-primary);">
+            {{ chunk.text || chunk.page_content || '' }}
+        </div>
+    </div>
+</div>

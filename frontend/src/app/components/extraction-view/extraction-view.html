@@ -1,0 +1,26 @@
+<div style="flex: 1; display: flex; flex-direction: column; gap: 1.5rem; height: 100%;">
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2>Target Schema</h2>
+            <button class="secondary-btn" (click)="proposeSchema()" [disabled]="!documentId || isGeneratingSchema">
+                <i class="fa-solid" [class.fa-magic]="!isGeneratingSchema" [class.fa-spinner]="isGeneratingSchema"
+                    [class.fa-spin]="isGeneratingSchema"></i>
+                {{ isGeneratingSchema ? 'Generating...' : 'Auto-Generate' }}
+            </button>
+        </div>
+        <textarea [(ngModel)]="schemaJson" placeholder='{ "field_name": "type" }'
+            style="width: 100%; height: 180px; font-family: monospace;"></textarea>
+        <button class="primary-btn" style="width: 100%;" (click)="runExtraction()"
+            [disabled]="!documentId || !schemaJson || isExtracting">
+            <i class="fa-solid fa-bolt"></i> Run Structured Extraction
+        </button>
+    </div>
+
+    <div style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+        <h2>Extracted Data</h2>
+        <div
+            style="flex: 1; background: rgba(0,0,0,0.3); border-radius: 0.75rem; padding: 1rem; font-family: monospace; white-space: pre-wrap; overflow-y: auto; border: 1px solid var(--glass-border);">
+            {{ extractionResult || 'Waiting for extraction...' }}
+        </div>
+    </div>
+</div>

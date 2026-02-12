@@ -1,0 +1,122 @@
+.app-container {
+    display: flex;
+    height: 100vh;
+    max-width: 1600px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 1rem;
+    gap: 1.5rem;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 380px;
+    background: var(--card-bg);
+    backdrop-filter: var(--glass-blur);
+    border-radius: 1.25rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    overflow-y: auto;
+}
+
+.main-content {
+    flex: 1;
+    background: var(--card-bg);
+    backdrop-filter: var(--glass-blur);
+    border-radius: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    overflow: hidden;
+    position: relative;
+    /* CRITICAL for absolute overlay */
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.5rem;
+    gap: 0.5rem;
+    margin: 1rem;
+    border-radius: 0.75rem;
+}
+
+.tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 0.75rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border-radius: 0.5rem;
+}
+
+.tab-btn:hover {
+    color: var(--text-primary);
+}
+
+.tab-btn.active {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.tab-content {
+    flex: 1;
+    display: none;
+    overflow: hidden;
+    padding: 1rem 1.5rem;
+}
+
+.tab-content.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Processing Overlay */
+.processing-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    gap: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.processing-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(56, 189, 248, 0.1);
+    border-left-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Status dots */
+.status-ready {
+    background: var(--success-color);
+    box-shadow: 0 0 10px var(--success-color);
+}
+
+.status-processing {
+    background: var(--text-secondary);
+}
