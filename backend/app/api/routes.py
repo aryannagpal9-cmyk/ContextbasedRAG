@@ -75,7 +75,7 @@ async def upload_document(file: UploadFile = File(...)):
         # Aggregate text for LLM
         full_text = ""
         for item, level in parsed_doc.iterate_items():
-            if hasattr(item, "text") and item.text:
+            if item.text:
                 full_text += item.text + "\n"
         
         # Propose Schema
@@ -239,7 +239,7 @@ async def extract_structured_data(request: ExtractionRequest):
             # Re-collect text from doc
             full_text = ""
             for item, level in parsed_doc.iterate_items():
-                 if hasattr(item, "text") and item.text:
+                 if item.text:
                      full_text += item.text + "\n"
                      
             structured_data = extractor.extract_structured_data(full_text[:30000], request.schema_definition)
@@ -273,7 +273,7 @@ async def propose_schema(request: ExtractionRequest):
         # Aggregate text (similar to extract)
         full_text = ""
         for item, level in parsed_doc.iterate_items():
-                if hasattr(item, "text") and item.text:
+                if item.text:
                     full_text += item.text + "\n"
                     
         # Generate schema

@@ -1,7 +1,9 @@
 fastapi
 uvicorn
 python-multipart
-docling
+pdfplumber
+python-docx
+beautifulsoup4
 sentence-transformers
 faiss-cpu
 groq

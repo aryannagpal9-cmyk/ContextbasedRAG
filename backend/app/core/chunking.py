@@ -29,21 +29,18 @@ class ContentChunker:
         
         for item, level in parsed_document.iterate_items():
             # 1. Context Tracking (Headings)
-            # Identifying heading items by string representation or attribute
-            item_type = str(type(item))
-            if "Heading" in item_type or "SectionHeader" in item_type:
-                # Update context
-                current_heading = item.text.strip() if hasattr(item, "text") else current_heading
+            if item.type == "heading":
+                current_heading = item.text.strip()
                 continue
 
             # 2. Text Handling
-            if hasattr(item, "text") and item.text:
+            if item.type == "text":
                 text = item.text.strip()
                 if not text:
                     continue
                 
                 section = self._identify_section(text)
-                page_no = getattr(item, "page_no", 1)
+                page_no = item.page_no
                 
                 # Semantic Merging: Join consecutive items of same section and page
                 if current_chunk and current_chunk["section_type"] == section and current_chunk["page_number"] == page_no:
@@ -51,7 +48,6 @@ class ContentChunker:
                 else:
                     # Finalize previous chunk
                     if current_chunk:
-                        # Prepend context if exists
                         if current_heading:
                             current_chunk["text"] = f"[{current_heading}] {current_chunk['text']}"
                         chunks.append(current_chunk)
@@ -64,7 +60,7 @@ class ContentChunker:
                     }
              
             # 3. Table Handling
-            elif "Table" in item_type:
+            elif item.type == "table":
                 # Finalize pending text chunk
                 if current_chunk:
                     if current_heading:
@@ -72,23 +68,17 @@ class ContentChunker:
                     chunks.append(current_chunk)
                     current_chunk = None
                 
-                try:
-                    df = item.export_to_dataframe()
-                    md_text = df.to_markdown(index=False)
-                    page_no = getattr(item, 'page_no', 1)
-                    table_text = f"Table Data (Page {page_no}):\n{md_text}"
-                    
-                    # Prepend context to table
-                    if current_heading:
-                         table_text = f"[{current_heading}] {table_text}"
-                         
-                    chunks.append({
-                        "text": table_text,
-                        "section_type": "rate",
-                        "page_number": page_no
-                    })
-                except:
-                    continue
+                table_text = f"Table Data (Page {item.page_no}):\n{item.text}"
+                
+                # Prepend context to table
+                if current_heading:
+                     table_text = f"[{current_heading}] {table_text}"
+                     
+                chunks.append({
+                    "text": table_text,
+                    "section_type": "rate",
+                    "page_number": item.page_no
+                })
 
         # Finalize last chunk
         if current_chunk:

@@ -1,5 +1,4 @@
 import pandas as pd
-from docling.datamodel.document import TableItem
 from typing import List, Dict, Any, Optional
 import os
 from groq import Groq
@@ -16,17 +15,18 @@ class DataExtractor:
 
     def extract_table_data(self, parsed_document) -> List[Dict[str, Any]]:
         """
-        Extracts tables from the parsed document as raw DataFrames.
+        Extracts tables from the parsed document.
         """
         tables = []
         for item, level in parsed_document.iterate_items():
-            if isinstance(item, TableItem):
-                df = item.export_to_dataframe()
-                tables.append({
-                    "dataframe": df,
-                    "page_number": getattr(item, "page_no", 1),
-                    "table_index": len(tables)
-                })
+            if item.type == "table":
+                df = item.metadata.get("df")
+                if df is not None:
+                    tables.append({
+                        "dataframe": df,
+                        "page_number": item.page_no,
+                        "table_index": len(tables)
+                    })
         return tables
 
     def extract_structured_data(self, text: str, schema: Dict[str, Any]) -> Dict[str, Any]:
