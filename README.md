@@ -1,80 +1,71 @@
-# Ultra Doc-Intelligence
+# Ultra Doc-Intelligence 🔳✨
 
-Ultra Doc-Intelligence is a high-precision, layout-aware RAG platform tailored for complex logistics audit and extraction. It uses **Deterministic Confidence Scoring** and **Semantic Chunking** to provide verifiable, audit-grade answers from PDFs, DOCX, and HTML documents.
+**Audit-Grade Cognitive Logistics Extraction**
+
+Ultra Doc-Intelligence is a high-precision, decoupled RAG (Retrieval-Augmented Generation) platform designed for complex logistics documents (Rate Confirmations, BOLs, Invoices). 
+
+## � Key Features
+
+- **🧠 Cognitive Intelligence Details**: Every answer includes a full transparency report:
+    - **Schema Mappings**: Semantic alignment between your query and extracted document data.
+    - **Confidence Breakdown**: Weighted scoring (Schema + Vector) to prevent hallucinations.
+    - **Source Citations**: Direct links to document pages and sections.
+- **⚡️ Ultra-Concise RAG**: AI responses optimized for brevity and professional relevance.
+- **🔄 Decoupled Architecture**: Stateless FastAPI backend and Reactive Angular 19 frontend.
 
 ---
 
-## 🚀 Quick Start
+## 🏗 System Architecture
 
-### 1. Prerequisites
-- **Python 3.10+**
-- **Groq API Key** (Get it at [console.groq.com](https://console.groq.com/))
-- **Git**
+The platform uses a split-service architecture for scalability and performance.
 
-### 2. Installation
+- **Backend**: Python 3.10+, FastAPI, IBM Docling, FAISS, Groq (Llama 3.1/3.3).
+- **Frontend**: Node 18+, Angular 19, RxJS State Management.
 
-Clone the repository:
-```bash
-git clone <your-repo-url>
-cd ultraship
-```
+---
 
-Create a virtual environment and install dependencies:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
+## 🚀 Production Setup
 
-### 3. Environment Configuration
-Create a `.env` file in the root directory:
+### 1. Requirements
+Ensure you have **Docker** and **Docker Compose** installed.
+
+### 2. Environment Configuration
+Create a `.env` file in the `backend/` directory:
 ```env
-GROQ_API_KEY=your_groq_api_key_here
+GROQ_API_KEY=your_api_key_here
 ```
 
-### 4. Running the Development Server
+### 3. Deployment (Docker Compose)
+From the project root, run:
 ```bash
+docker-compose up --build
+```
+- **Frontend**: [http://localhost:4200](http://localhost:4200)
+- **Backend API**: [http://localhost:8000](http://localhost:8000)
+
+---
+
+## 🛠 Manual Development Setup
+
+### Backend (Port 8000)
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate # Windows: venv\Scripts\activate
+pip install -r requirements.txt
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
-The application will be available at `http://localhost:8000`.
 
----
-
-## 🛠 Features
-
-- **Ingestion**: Powered by IBM Docling for layout-aware parsing.
-- **RAG Engine**: Llama 3.1 8B via Groq for high-density, low-fluff answers.
-- **Extraction**: Llama 3.3 70B for automated schema proposal and structured data extraction.
-- **Internal Intelligence**:
-    - **Semantic Chunking**: Hierarchical heading context prepending.
-    - **Weighted Confidence**: 50/50 mix of Contextual (Schema) and Semantic (Vector) mappings.
-    - **Hard Refusal**: Automatic denial if confidence score < 0.45.
-- **Premium UI**: Dark-mode glassmorphism with interactive "Intelligence Toggles."
-
----
-
-## 🐳 Deployment (Docker)
-
-To deploy using Docker:
-
-1. **Build the image**:
+### Frontend (Port 4200)
 ```bash
-docker build -t ultra-doc-intel .
-```
-
-2. **Run the container**:
-```bash
-docker run -p 8000:8000 --env-file .env ultra-doc-intel
+cd frontend
+npm install
+npx ng serve --host 0.0.0.0 --port 4200
 ```
 
 ---
 
-## 📄 Documentation
-- **[PRD.md](PRD.md)**: Product Requirements & Vision.
-- **[TRD.md](TRD.md)**: Technical Architecture, Chunking Strategy, and Scoring Logic.
-
----
-
-## ⚖️ License
-MIT License.
-# ContextbasedRAG
+## 📄 Documentation & Audit
+- **[PRD.md](PRD.md)**: Product Requirements & Strategy
+- **[TRD.md](TRD.md)**: Technical Architecture & Confidence Logic
+- **[walkthrough.md](walkthrough.md)**: Feature demonstration & доказательство работы

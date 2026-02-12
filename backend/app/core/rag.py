@@ -12,7 +12,7 @@ class RAGEngine:
 
     def answer_question(self, question: str, context: list[dict], structured_context: str = "") -> dict:
         """
-        Generates an answer using Llama 3.1 8B with source citations and optional structured context.
+        Generates an answer using Llama 3.1 8B with strict brevity and relevance constraints.
         """
         from app.core.logging_config import logger
         logger.info(f"RAG Engine: Answering question: {question}")
@@ -24,12 +24,17 @@ class RAGEngine:
             context_str += f"[Source {i+1}] (Page {meta.get('page_number')}): {meta.get('text')}\n\n"
 
         system_prompt = """
-            You are the AI assistant for Ultra Doc-Intelligence, a high-precision logistics document analysis system.
-            ...
+            You are the AI assistant for Ultra Doc-Intelligence.
+            
+            CORE DIRECTIVES:
+            1. BREVITY: Keep answers short, crisp, and direct. No fluff.
+            2. RELEVANCE: Answer ONLY what is asked. Do not provide extra information or context unless vital.
+            3. GROUNDING: Use ONLY the provided document context.
+            4. ACCURACY: If the answer isn't in the text, say you don't know.
             """
 
         user_prompt = f"""
-            ### DOCUMENT CONTEXT (UNSTRUCTURED CHUNKS)
+            ### DOCUMENT CONTEXT
             {context_str}
             
             {structured_context}
@@ -37,9 +42,10 @@ class RAGEngine:
             ### USER QUESTION
             {question}
             ---
-            ### RESPONSE REQUIREMENTS
-            - Answer strictly using the document context
-            - Give your answer in a human readable format
+            ### INSTRUCTIONS
+            - Provide a short, crisp answer (max 3 sentences).
+            - Focus strictly on answering the specific query.
+            - Use the context provided above.
             """
         
         try:

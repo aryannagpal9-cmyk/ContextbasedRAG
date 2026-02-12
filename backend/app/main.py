@@ -7,10 +7,20 @@ load_dotenv()
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from app.api import routes
 from app.core.logging_config import logger
 
 app = FastAPI(title="Ultra Doc-Intelligence")
+
+# Enable CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Global Exception Handler
 @app.exception_handler(Exception)
@@ -33,9 +43,3 @@ async def log_requests(request: Request, call_next):
     return response
 
 app.include_router(routes.router)
-
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
-
-@app.get("/")
-async def root():
-    return FileResponse("app/static/index.html")

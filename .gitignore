@@ -1,4 +1,31 @@
+# Environment variables
 .env
-venv
+backend/.env
+
+# Python / Backend
 venv/
-__pycache__
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+faiss_index/
+
+# Node / Angular / Frontend
+node_modules/
+dist/
+.angular/
+.npm/
+
+# Logs
+*.log
+backend.log
+frontend.log
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store
+
+# Misc
+temp_uploads/
