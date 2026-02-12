@@ -16,7 +16,7 @@ app = FastAPI(title="Ultra Doc-Intelligence")
 # Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4200"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -42,4 +42,4 @@ async def log_requests(request: Request, call_next):
     logger.info(f"Final Status: {response.status_code}")
     return response
 
-app.include_router(routes.router)
+app.include_router(routes.router, prefix="/api")

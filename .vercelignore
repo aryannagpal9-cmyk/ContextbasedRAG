@@ -1,0 +1,18 @@
+# Exclude local environments and large caches
+backend/venv/
+backend/out.log
+backend/backend.log
+frontend/node_modules/
+frontend/out.log
+frontend/frontend.log
+frontend/.angular/
+.angular/
+dist/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+.git/
+node_modules/
+venv/
+env/
