@@ -43,3 +43,6 @@ async def log_requests(request: Request, call_next):
     return response
 
 app.include_router(routes.router, prefix="/api")
+@app.get("/")
+async def root():
+    return "RUNNING"
